@@ -1,6 +1,8 @@
+/* eslint-disable no-plusplus */
 import { Ship } from "./ship";
 
 const Gameboard = () => {
+  const ships = [];
   const createBoard = () => {
     const board = [];
     for (let i = 0; i < 10; i++) {
@@ -22,21 +24,27 @@ const Gameboard = () => {
     if (rowStart === rowEnd) {
       //the ship is placed horizontally
       for (let k = i; k < ship.length; k++) {
-        if (!board[rowStart][k][2]) {
-          board[rowStart][k][2] = ship;
-        } else {
+        //first makes sure that a ship is not placed
+        //in any of those cells
+        if (board[rowStart][k][2]) {
           return false;
         }
       }
+      for (let k = i; k < ship.length; k++) {
+        board[rowStart][k][2] = ship;
+      }
+      ships.push(ship);
     } else {
       //the ship is placed vertically
       for (let k = rowStart; k < ship.length; k++) {
-        if (!board[k][i][2]) {
-          board[k][i][2] = ship;
-        } else {
+        if (board[k][i][2]) {
           return false;
         }
       }
+      for (let k = rowStart; k < ship.length; k++) {
+        board[k][i][2] = ship;
+      }
+      ships.push(ship);
     }
     return true;
   };
@@ -51,7 +59,11 @@ const Gameboard = () => {
     board[i][j][3] = true;
   };
 
-  return { showBoard, placeShip, receiveAttack };
+  const allShipsSunk = () => {
+    return ships.every((ship) => ship.isSunk());
+  };
+
+  return { showBoard, placeShip, receiveAttack, allShipsSunk };
 };
 
 export { Gameboard };
