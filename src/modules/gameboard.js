@@ -22,14 +22,23 @@ const Gameboard = () => {
     if (rowStart === rowEnd) {
       //the ship is placed horizontally
       for (let k = i; k < ship.length; k++) {
-        board[rowStart][k][2] = ship;
+        if (!board[rowStart][k][2]) {
+          board[rowStart][k][2] = ship;
+        } else {
+          return false;
+        }
       }
     } else {
       //the ship is placed vertically
       for (let k = rowStart; k < ship.length; k++) {
-        board[k][i][2] = ship;
+        if (!board[k][i][2]) {
+          board[k][i][2] = ship;
+        } else {
+          return false;
+        }
       }
     }
+    return true;
   };
 
   const receiveAttack = (cell) => {
