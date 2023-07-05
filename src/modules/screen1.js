@@ -1,3 +1,8 @@
+function getName() {
+  const name = document.getElementById("name");
+  return name.value;
+}
+
 function createScreen1() {
   const screen1 = document.createElement("div");
   screen1.className = "screen1";
@@ -20,11 +25,6 @@ function createScreen1() {
   screen1.append(logo, form);
   const body = document.querySelector("body");
   body.append(screen1);
-}
-
-function getName() {
-  const name = document.getElementById("name");
-  return name.value;
 }
 
 function eraseScreen1() {
