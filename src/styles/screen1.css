@@ -1,0 +1,45 @@
+body,
+html {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.screen1 {
+  font-size: 48px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: space-between;
+  background-color: black;
+}
+
+.logo-container {
+  height: 50%;
+  position: relative;
+}
+
+.logo {
+  background-image: url("../images/battleship-logo.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 100%;
+  position: absolute;
+  width: 50%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  transform: scale(2);
+  animation: 0.7s ease-in 0.1s 1;
+  animation-name: popin;
+}
+
+@keyframes popin {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(2);
+  }
+}
