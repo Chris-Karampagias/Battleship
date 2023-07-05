@@ -1,5 +1,3 @@
-console.log("hello");
-
-export default function add(a, b) {
-  return a + b;
-}
+import "./styles/screen1.css";
+import "./styles/screen2.css";
+import "./styles/screen3.css";

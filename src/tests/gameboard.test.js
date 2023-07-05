@@ -3,7 +3,6 @@ import { Ship } from "../modules/ship";
 import { Gameboard } from "../modules/gameboard";
 
 let board;
-
 beforeEach(() => {
   board = Gameboard();
 });
@@ -52,12 +51,15 @@ test("returns false if a ship is already placed in the specified coordinates", (
   expect(board.placeShip(cruiser)).toBe(false);
 });
 
-test("returns false if a ship is already placed in ONE of the specified coordinates", () => {
-  board.placeShip(carrierHoriz);
-  expect(board.placeShip(carrierVert)).toBe(false);
+test("returns false if a ship is already placed in ONE of the specified coordinates and doesn't place it", () => {
+  const carrier1 = Ship("carrier", 5, [0, 1], [4, 1]);
+  const carrier2 = Ship("carrier", 5, [1, 0], [1, 4]);
+  board.placeShip(carrier1);
+  expect(board.placeShip(carrier2)).toBe(false);
+  expect(board.showBoard()[1][0][2]).toBe(null);
 });
 
-test("checks if a filled position that's hit is marked on the board and if timesHit is updated", () => {
+test("checks if a filled position that's hit is marked on the board and if timesHit is called", () => {
   board.placeShip(car);
   board.receiveAttack([0, 0]);
 

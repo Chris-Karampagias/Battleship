@@ -21,11 +21,11 @@ const Gameboard = () => {
     const rowStart = ship.start[0];
     const rowEnd = ship.end[0];
     const i = ship.start[1];
+    //the ship is placed horizontally
     if (rowStart === rowEnd) {
-      //the ship is placed horizontally
+      //first makes sure that a ship is not placed
+      //in any of those cells
       for (let k = i; k < ship.length; k++) {
-        //first makes sure that a ship is not placed
-        //in any of those cells
         if (board[rowStart][k][2]) {
           return false;
         }
@@ -41,6 +41,7 @@ const Gameboard = () => {
           return false;
         }
       }
+
       for (let k = rowStart; k < ship.length; k++) {
         board[k][i][2] = ship;
       }

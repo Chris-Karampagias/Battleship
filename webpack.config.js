@@ -30,6 +30,9 @@ module.exports = {
       {
         test: /\.(ttf|eot|svg)$/,
         type: "asset/resource",
+        generator: {
+          filename: "images/[name].[ext]",
+        },
       },
     ],
   },
