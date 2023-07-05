@@ -1,0 +1,66 @@
+.screen2 {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  font-size: 48px;
+  background-color: rgb(8, 113, 198);
+  height: 100%;
+}
+
+.message {
+  color: white;
+  margin-top: 1rem;
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+}
+
+.directions-container {
+  font-size: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  color: white;
+}
+
+.vertically,
+.horizontally {
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+
+.chosen {
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid white;
+}
+
+.grid {
+  aspect-ratio: 1/1;
+  background-color: white;
+  height: 75%;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  margin-bottom: 0.5rem;
+}
+
+.cell {
+  border: 1px solid rgb(8, 113, 198);
+  padding: 1rem;
+}
+
+.message,
+.directions-container,
+.grid {
+  animation: 1.5s ease-in 0.1s 1;
+  animation-name: screen2;
+}
+
+@keyframes screen2 {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
