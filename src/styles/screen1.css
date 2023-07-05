@@ -14,24 +14,24 @@ html {
   height: 100%;
   align-items: space-between;
   background-color: black;
+  justify-items: center;
 }
 
-.logo-container {
-  height: 50%;
+/* .logo-container {
+  height: fit-content;
   position: relative;
-}
+} */
 
 .logo {
   background-image: url("../images/battleship-logo.svg");
   background-repeat: no-repeat;
   background-size: contain;
-  height: 100%;
-  position: absolute;
-  width: 50%;
-  left: 50%;
-  transform: translate(-50%, 0);
+  background-position: center;
+  height: 400px;
+  /* position: absolute; */
+  width: 100%;
   transform: scale(2);
-  animation: 0.7s ease-in 0.1s 1;
+  animation: 1s ease-in 0.1s 1;
   animation-name: popin;
 }
 
@@ -42,4 +42,20 @@ html {
   to {
     transform: scale(2);
   }
+}
+
+form {
+  height: 50%;
+  align-self: center;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+#name,
+.submit-button {
+  font-size: 2rem;
+  font-family: inherit;
+  border-radius: 10px;
 }
