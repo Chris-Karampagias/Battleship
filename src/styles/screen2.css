@@ -47,13 +47,19 @@
 .cell {
   border: 1px solid rgb(8, 113, 198);
   padding: 1rem;
+  cursor: pointer;
 }
 
 .message,
 .directions-container,
 .grid {
-  animation: 1.5s ease-in 0.1s 1;
+  transform: scale(1);
+  animation: 1.3s ease-in 1;
   animation-name: screen2;
+}
+
+.marked {
+  background-color: grey;
 }
 
 @keyframes screen2 {
