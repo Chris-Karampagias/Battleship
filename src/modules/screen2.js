@@ -28,6 +28,7 @@ function createScreen2() {
   vertically.textContent = "Vertically";
   const horizontally = document.createElement("div");
   horizontally.className = "horizontally";
+  horizontally.classList.add("chosen");
   horizontally.textContent = "Horizontally";
   directionsContainer.append(vertically, horizontally);
   const grid = createGrid();
@@ -40,4 +41,98 @@ function eraseScreen2() {
   screen2.remove();
 }
 
-export { createScreen2, eraseScreen2 };
+function unmarkCells(cells) {
+  for (let i = 0; i < cells.length; i++) {
+    if (
+      cells[i].classList.contains("marked") &&
+      !cells[i].hasAttribute("data-ship")
+    ) {
+      cells[i].classList.remove("marked");
+    }
+  }
+}
+
+function manipulateCells(start, cells, ship, callback) {
+  const horizontalOption = document.querySelector(".horizontally");
+  const [c1, c2] = start;
+  if (horizontalOption.classList.contains("chosen")) {
+    if (c2 + ship[1] > 10) {
+      return;
+    } else if (cellsAreEmpty(c1, c2, "horizontal", ship[1], cells)) {
+      for (let k = c2; k < c2 + ship[1]; k++) {
+        for (let i = 0; i < cells.length; i++) {
+          if (
+            Number(cells[i].attributes[1].value) === c1 &&
+            Number(cells[i].attributes[2].value) === k
+          ) {
+            callback(cells[i], ship[0]);
+            break;
+          }
+        }
+      }
+    }
+  } else {
+    if (c1 + ship[1] > 10) {
+      return;
+    } else if (cellsAreEmpty(c1, c2, "vertical", ship[1], cells)) {
+      for (let k = c1; k < c1 + ship[1]; k++) {
+        for (let i = 0; i < cells.length; i++) {
+          if (
+            Number(cells[i].attributes[2].value) === c2 &&
+            Number(cells[i].attributes[1].value) === k
+          ) {
+            callback(cells[i], ship[0]);
+            break;
+          }
+        }
+      }
+    }
+  }
+}
+
+function cellsAreEmpty(c1, c2, direction, length, cells) {
+  if (direction === "horizontal") {
+    for (let k = c2; k < c2 + length; k++) {
+      for (let i = 0; i < cells.length; i++) {
+        if (
+          Number(cells[i].attributes[1].value) === c1 &&
+          Number(cells[i].attributes[2].value) === k &&
+          cells[i].hasAttribute("data-ship")
+        ) {
+          return false;
+        }
+      }
+    }
+  } else {
+    for (let k = c1; k < c1 + length; k++) {
+      for (let i = 0; i < cells.length; i++) {
+        if (
+          Number(cells[i].attributes[2].value) === c2 &&
+          Number(cells[i].attributes[1].value) === k &&
+          cells[i].hasAttribute("data-ship")
+        ) {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
+function colorCell(cell) {
+  cell.classList.add("marked");
+}
+
+function markCell(cell, name) {
+  cell.setAttribute("data-ship", name);
+}
+
+export {
+  createScreen2,
+  unmarkCells,
+  manipulateCells,
+  colorCell,
+  markCell,
+  eraseScreen2,
+};
