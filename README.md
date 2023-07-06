@@ -1,1 +1,4 @@
-# Battleship
+1. **Screen2.js**
+   1. `manipulateCells` : Takes an array with the coordinates of the cell(**data-row** && **data-column**), the `cells` array which contains all cell DOM elements, the `currentShip`(to use its length value) and one of the following callbacks depending on whether the user clicked or hovered over the cell, `colorCell` or `markCell`. The function "looks" as many cells forward as the ship's length and decides if the cells are occupied by calling the `cellsAreEmpty` function. If the cells are not marked (i.e are already colored grey or have the **data-ship** attribute) then it calls the callback function.
+   2. `createGrid` : Creates a div (grid) and appends 100 divs (cells) to it, each one with a **data-row** and a **data-cell** property which reprecent the cell's row and column ,respectively, inside the grid
+   3. `unmarkCells` : Takes the `cells` array and checkes to see which of the cells don't have the **data-ship** attribute (i.e which of the cells are not occupied) and removes the **marked** class from them.
