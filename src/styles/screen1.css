@@ -17,11 +17,6 @@ html {
   justify-items: center;
 }
 
-/* .logo-container {
-  height: fit-content;
-  position: relative;
-} */
-
 .logo {
   background-image: url("../images/battleship-logo.svg");
   background-repeat: no-repeat;
