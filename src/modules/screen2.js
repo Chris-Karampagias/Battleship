@@ -1,4 +1,19 @@
 /* eslint-disable no-plusplus */
+function createGrid() {
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      cell.setAttribute("data-row", `${i}`);
+      cell.setAttribute("data-column", `${j}`);
+      grid.append(cell);
+    }
+  }
+  return grid;
+}
+
 function createScreen2() {
   const body = document.querySelector("body");
   const screen2 = document.createElement("div");
@@ -23,21 +38,6 @@ function createScreen2() {
 function eraseScreen2() {
   const screen2 = document.querySelector(".screen2");
   screen2.remove();
-}
-
-function createGrid() {
-  const grid = document.createElement("div");
-  grid.className = "grid";
-  for (let i = 0; i < 10; i++) {
-    for (let j = 0; j < 10; j++) {
-      const cell = document.createElement("div");
-      cell.className = "cell";
-      cell.setAttribute("data-row", `${i}`);
-      cell.setAttribute("data-column", `${j}`);
-      grid.append(cell);
-    }
-  }
-  return grid;
 }
 
 export { createScreen2, eraseScreen2 };

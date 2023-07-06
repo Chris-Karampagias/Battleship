@@ -7,7 +7,6 @@ import { createScreen1, getName, eraseScreen1 } from "./modules/screen1";
 import { createScreen2, eraseScreen2 } from "./modules/screen2";
 
 const body = document.querySelector("body");
-
 const shipsInfo = {
   carrier: 5,
   battleship: 4,
@@ -32,3 +31,10 @@ submitButton.addEventListener("click", (e) => {
 });
 
 //Screen 2
+
+//Create screen2 when screen1 gets deleted via mutation observer
+const screen1Observer = new MutationObserver(() => {
+  createScreen2();
+  screen1Observer.disconnect();
+});
+screen1Observer.observe(body, { attributes: true });

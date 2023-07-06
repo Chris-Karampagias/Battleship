@@ -24,11 +24,14 @@ function createScreen1() {
   form.append(label, submitButton);
   screen1.append(logo, form);
   const body = document.querySelector("body");
+  body.setAttribute("data-screen", "1");
   body.append(screen1);
 }
 
 function eraseScreen1() {
   const screen1 = document.querySelector(".screen1");
+  const body = document.querySelector("body");
+  body.setAttribute("data-screen", "2");
   screen1.remove();
 }
 
