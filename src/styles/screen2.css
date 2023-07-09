@@ -37,11 +37,11 @@
 .grid {
   aspect-ratio: 1/1;
   background-color: white;
-  height: 75%;
+  height: 100%;
+  width: 90%;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  margin-bottom: 0.5rem;
 }
 
 .cell {
@@ -56,10 +56,30 @@
 
 .message,
 .directions-container,
-.grid {
+.grid-container {
   transform: scale(1);
   animation: 1.3s ease-in 1;
   animation-name: screen2;
+}
+
+.reset-button,
+.randomize-button {
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+
+.reset-button:hover,
+.randomize-button:hover {
+  transform: scale(1.1);
+}
+
+.grid-container {
+  display: flex;
+  gap: 8rem;
+  height: 75%;
+  margin-bottom: 0.5rem;
+  align-items: center;
 }
 
 .marked {

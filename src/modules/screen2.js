@@ -31,8 +31,17 @@ function createScreen2() {
   horizontally.classList.add("chosen");
   horizontally.textContent = "Horizontally";
   directionsContainer.append(vertically, horizontally);
+  const resetButton = document.createElement("div");
+  const randomizeButton = document.createElement("div");
+  resetButton.textContent = "Reset";
+  randomizeButton.textContent = "Randomize";
+  resetButton.className = "reset-button";
+  randomizeButton.className = "randomize-button";
+  const container = document.createElement("div");
+  container.className = "grid-container";
   const grid = createGrid();
-  screen2.append(message, directionsContainer, grid);
+  container.append(resetButton, grid, randomizeButton);
+  screen2.append(message, directionsContainer, container);
   body.append(screen2);
 }
 
