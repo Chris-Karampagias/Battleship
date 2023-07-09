@@ -96,6 +96,8 @@ const screen1Observer = new MutationObserver(() => {
       const ship = Ship(currentShip[0], currentShip[1], start, end);
       playerBoard.placeShip(ship);
       if (currentShip[0] === "patrolBoat") {
+        verticalOption.classList.add("no-pointer-events");
+        horizontalOption.classList.add("no-pointer-events");
         cells.forEach((cell) => cell.classList.add("no-pointer-events"));
       }
       currentShip = shipsInfo.shift();
