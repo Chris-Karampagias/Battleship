@@ -17,31 +17,31 @@ function createGrid() {
 function createScreen2() {
   const body = document.querySelector("body");
   const screen2 = document.createElement("div");
-  screen2.className = "screen2";
+  const resetButton = document.createElement("div");
+  const randomizeButton = document.createElement("div");
+  const directionsContainer = document.createElement("div");
   const message = document.createElement("div");
+  const vertically = document.createElement("div");
+  const horizontally = document.createElement("div");
+  const container = document.createElement("div");
+  const grid = createGrid();
+  screen2.className = "screen2";
   message.className = "message";
   message.textContent = "Place your carrier!";
-  const directionsContainer = document.createElement("div");
   directionsContainer.className = "directions-container";
-  const vertically = document.createElement("div");
   vertically.className = "vertically";
   vertically.textContent = "Vertically";
-  const horizontally = document.createElement("div");
   horizontally.className = "horizontally";
   horizontally.classList.add("chosen");
   horizontally.textContent = "Horizontally";
   directionsContainer.append(vertically, horizontally);
-  const resetButton = document.createElement("div");
-  const randomizeButton = document.createElement("div");
   resetButton.textContent = "Reset";
   randomizeButton.textContent = "Randomize";
   resetButton.className = "reset-button";
   randomizeButton.className = "randomize-button";
-  const container = document.createElement("div");
   container.className = "grid-container";
-  const grid = createGrid();
-  container.append(resetButton, grid, randomizeButton);
-  screen2.append(message, directionsContainer, container);
+  container.append(message, directionsContainer, grid);
+  screen2.append(resetButton, container, randomizeButton);
   body.append(screen2);
 }
 

@@ -1,8 +1,7 @@
 .screen2 {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
   align-items: center;
+  justify-content: center;
   font-size: 48px;
   background-color: rgb(8, 113, 198);
   height: 100%;
@@ -38,7 +37,6 @@
   aspect-ratio: 1/1;
   background-color: white;
   height: 100%;
-  width: 90%;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
@@ -66,6 +64,8 @@
 .randomize-button {
   color: white;
   cursor: pointer;
+  width: 15%;
+  text-align: center;
   transition: all 0.2s ease-in;
 }
 
@@ -76,10 +76,13 @@
 
 .grid-container {
   display: flex;
-  gap: 8rem;
-  height: 75%;
-  margin-bottom: 0.5rem;
+  flex-direction: column;
+  gap: 3rem;
+  height: 100%;
+  width: 60%;
+  margin-bottom: 1rem;
   align-items: center;
+  justify-content: center;
 }
 
 .marked {
