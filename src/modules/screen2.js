@@ -20,7 +20,7 @@ function createScreen2() {
   screen2.className = "screen2";
   const message = document.createElement("div");
   message.className = "message";
-  message.textContent = "Place your carrier";
+  message.textContent = "Place your carrier!";
   const directionsContainer = document.createElement("div");
   directionsContainer.className = "directions-container";
   const vertically = document.createElement("div");
@@ -70,6 +70,7 @@ function manipulateCells(start, cells, ship, callback) {
           }
         }
       }
+      return [c1, c2 + ship[1] - 1];
     }
   } else {
     if (c1 + ship[1] > 10) {
@@ -86,6 +87,7 @@ function manipulateCells(start, cells, ship, callback) {
           }
         }
       }
+      return [c1 + ship[1] - 1, c2];
     }
   }
 }
