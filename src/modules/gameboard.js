@@ -67,4 +67,38 @@ const Gameboard = () => {
   return { showBoard, placeShip, receiveAttack, allShipsSunk };
 };
 
-export { Gameboard };
+function placeShipRandomly(board, type, length) {
+  const key = Math.floor(Math.random() * 2);
+  let ship, si, sj, ei, ej;
+  if (key === 0) {
+    //place ship horizontally
+    si = Math.floor(Math.random() * 10);
+    sj = Math.floor(Math.random() * 10);
+    ej = sj + length;
+    ei = si;
+    ship = Ship(type, length, [si, sj], [ei, ej]);
+    while (ej > 9 || !board.placeShip(ship)) {
+      si = Math.floor(Math.random() * 10);
+      sj = Math.floor(Math.random() * 10);
+      ej = sj + length;
+      ei = si;
+      ship = Ship(type, length, [si, sj], [ei, ej]);
+    }
+  } else {
+    //place ship vertically
+    si = Math.floor(Math.random() * 10);
+    sj = Math.floor(Math.random() * 10);
+    ej = sj;
+    ei = si + length;
+    ship = Ship(type, length, [si, sj], [ei, ej]);
+    while (ei > 9 || !board.placeShip(ship)) {
+      si = Math.floor(Math.random() * 10);
+      sj = Math.floor(Math.random() * 10);
+      ej = sj;
+      ei = si + length;
+      ship = Ship(type, length, [si, sj], [ei, ej]);
+    }
+  }
+}
+
+export { Gameboard, placeShipRandomly };
