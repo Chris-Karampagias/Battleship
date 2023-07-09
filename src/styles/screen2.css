@@ -52,8 +52,8 @@
   pointer-events: none;
 }
 
-.message,
-.directions-container,
+.reset-button,
+.randomize-button,
 .grid-container {
   transform: scale(1);
   animation: 1.3s ease-in 1;
