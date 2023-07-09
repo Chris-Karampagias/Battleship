@@ -3,7 +3,7 @@ import "./styles/screen1.css";
 import "./styles/screen2.css";
 import "./styles/screen3.css";
 import { Player, Computer } from "./modules/player-ai";
-import { Gameboard } from "./modules/gameboard";
+import { Gameboard, placeShipRandomly } from "./modules/gameboard";
 import { createScreen1, getName, eraseScreen1 } from "./modules/screen1";
 import {
   createScreen2,
@@ -14,6 +14,7 @@ import {
   eraseScreen2,
   manipulateCells,
 } from "./modules/screen2";
+import { Ship } from "./modules/ship";
 
 const body = document.querySelector("body");
 let name, player, ai;
@@ -29,7 +30,7 @@ submitButton.addEventListener("click", (e) => {
     eraseScreen1();
     player = Player(name);
     ai = Computer();
-  }, 1300);
+  }, 800);
 });
 
 //Screen 2
@@ -45,11 +46,12 @@ let playerBoard, aiBoard;
 //Create screen2 when screen1 gets deleted via mutation observer
 const screen1Observer = new MutationObserver(() => {
   createScreen2();
-  currentShip = shipsInfo.shift();
   playerBoard = Gameboard();
   aiBoard = Gameboard();
+  currentShip = shipsInfo.shift();
   const verticalOption = document.querySelector(".vertically");
   const horizontalOption = document.querySelector(".horizontally");
+  const message = document.querySelector(".message");
 
   verticalOption.addEventListener("click", (e) => {
     if (e.target.classList.contains("chosen")) {
@@ -85,11 +87,23 @@ const screen1Observer = new MutationObserver(() => {
       if (e.target.hasAttribute("data-ship")) {
         return;
       }
-      const coords = [
+      const start = [
         Number(e.target.attributes[1].value),
         Number(e.target.attributes[2].value),
       ];
-      manipulateCells(coords, cells, currentShip, markCell);
+      const end = manipulateCells(start, cells, currentShip, markCell);
+      placeShipRandomly(aiBoard, currentShip[0], currentShip[1]);
+      const ship = Ship(currentShip[0], currentShip[1], start, end);
+      playerBoard.placeShip(ship);
+      if (currentShip[0] === "patrolBoat") {
+        cells.forEach((cell) => cell.classList.add("no-pointer-events"));
+      }
+      currentShip = shipsInfo.shift();
+      if (currentShip[0] === "patrolBoat") {
+        message.textContent = "Place your patrol boat!";
+      } else {
+        message.textContent = "Place your " + currentShip[0] + "!";
+      }
     });
 
     cell.addEventListener("mouseout", () => {
