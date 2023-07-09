@@ -50,6 +50,10 @@
   cursor: pointer;
 }
 
+.no-pointer-events {
+  pointer-events: none;
+}
+
 .message,
 .directions-container,
 .grid {
