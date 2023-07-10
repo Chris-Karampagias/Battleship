@@ -1,4 +1,6 @@
 /* eslint-disable no-plusplus */
+import { placeShipRandomly } from "./gameboard";
+
 function createGrid() {
   const grid = document.createElement("div");
   grid.className = "grid";
@@ -63,7 +65,9 @@ function unmarkCells(cells) {
 
 function manipulateCells(start, cells, ship, callback) {
   const horizontalOption = document.querySelector(".horizontally");
-  const [c1, c2] = start;
+  let [c1, c2] = start;
+  c1 = c1 + 1;
+  c2 = c2 + 1;
   if (horizontalOption.classList.contains("chosen")) {
     if (c2 + ship[1] > 10) {
       return;
@@ -131,6 +135,35 @@ function cellsAreEmpty(c1, c2, direction, length, cells) {
   return true;
 }
 
+function randomize(playerBoard, aiBoard, ships, cells) {
+  const copy = ships.slice();
+  let currentShip;
+  while (copy.length !== 0) {
+    currentShip = copy.shift();
+    placeShipRandomly(playerBoard, currentShip[0], currentShip[1]);
+    placeShipRandomly(aiBoard, currentShip[0], currentShip[1]);
+  }
+  highlightCells(cells, playerBoard);
+}
+
+function highlightCells(cells, board) {
+  for (let i = 0; i < board.showBoard().length; i++) {
+    for (let j = 0; j < board.showBoard().length; j++) {
+      if (board.showBoard()[i][j][2]) {
+        for (let k = 0; k < cells.length; k++) {
+          if (
+            Number(cells[k].attributes[1].value) === i &&
+            Number(cells[k].attributes[2].value) === j
+          ) {
+            colorCell(cells[k]);
+            break;
+          }
+        }
+      }
+    }
+  }
+}
+
 function colorCell(cell) {
   cell.classList.add("marked");
 }
@@ -146,4 +179,5 @@ export {
   colorCell,
   markCell,
   eraseScreen2,
+  randomize,
 };
