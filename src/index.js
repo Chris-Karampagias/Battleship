@@ -13,6 +13,7 @@ import {
   eraseScreen2,
   manipulateCells,
   randomize,
+  clearGrid,
 } from "./modules/screen2";
 import { Ship } from "./modules/ship";
 
@@ -74,8 +75,20 @@ const screen1Observer = new MutationObserver(() => {
     randomize(playerBoard, aiBoard, shipsInfo, cells);
     verticalOption.classList.add("no-pointer-events");
     horizontalOption.classList.add("no-pointer-events");
+    resetButton.classList.add("no-pointer-events");
     cells.forEach((cell) => cell.classList.add("no-pointer-events"));
     message.textContent = "Get Ready!";
+  });
+
+  resetButton.addEventListener("click", () => {
+    playerBoard.clear();
+    aiBoard.clear();
+    clearGrid(cells);
+    currentShip = undefined;
+    message.textContent = "Place your carrier!";
+    if (randomizeButton.classList.contains("no-pointer-events")) {
+      randomizeButton.classList.remove("no-pointer-events");
+    }
   });
 
   const cells = Array.from(document.querySelectorAll(".cell"));
@@ -86,8 +99,8 @@ const screen1Observer = new MutationObserver(() => {
         return;
       }
       const start = [
-        Number(e.target.attributes[1].value - 1),
-        Number(e.target.attributes[2].value - 1),
+        Number(e.target.attributes[1].value),
+        Number(e.target.attributes[2].value),
       ];
       unmarkCells(cells);
       manipulateCells(start, cells, currentShip, colorCell);
@@ -104,18 +117,21 @@ const screen1Observer = new MutationObserver(() => {
       }
       randomizeButton.classList.add("no-pointer-events");
       const start = [
-        Number(e.target.attributes[1].value - 1),
-        Number(e.target.attributes[2].value - 1),
+        Number(e.target.attributes[1].value),
+        Number(e.target.attributes[2].value),
       ];
       const end = manipulateCells(start, cells, currentShip, markCell);
       placeShipRandomly(aiBoard, currentShip[0], currentShip[1]);
       const ship = Ship(currentShip[0], currentShip[1], start, end);
       playerBoard.placeShip(ship);
+      console.log(playerBoard.showBoard());
       if (currentShip[0] === "patrolBoat") {
         verticalOption.classList.add("no-pointer-events");
         horizontalOption.classList.add("no-pointer-events");
         cells.forEach((cell) => cell.classList.add("no-pointer-events"));
+        resetButton.classList.add("no-pointer-events");
         message.textContent = "Get ready!";
+        return;
       }
       currentShip = shipsInfo.find((ship) => !playerBoard.shipIsAdded(ship[0]));
       if (currentShip[0] === "patrolBoat") {
