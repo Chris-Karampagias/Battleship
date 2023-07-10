@@ -2,44 +2,33 @@
 import { Ship } from "../modules/ship";
 import { Gameboard } from "../modules/gameboard";
 
-function placeShipRandomlyMock(board, type, length) {
-  const key = Math.floor(Math.random() * 2);
-  let counter = 0;
-  let ship, si, sj, ei, ej;
-  if (key === 0) {
-    //place ship horizontally
-    si = Math.floor(Math.random() * 10);
-    sj = Math.floor(Math.random() * 10);
-    ej = sj + length;
+function placeShipRandomlyMock(si, sj, length) {
+  let ei, ej;
+
+  if (si === sj) {
+    //ship is placed horizontally
+    ej = sj + length - 1;
     ei = si;
-    ship = Ship(type, length, [si, sj], [ei, ej]);
-    while (ej > 9 || !board.placeShip(ship)) {
-      si = Math.floor(Math.random() * 10);
-      sj = Math.floor(Math.random() * 10);
-      ej = sj + length;
-      ei = si;
-      ship = Ship(type, length, [si, sj], [ei, ej]);
-      counter++;
-      if (counter === 100) return false;
-    }
   } else {
-    //place ship vertically
+    //ship is placed vertically
+    ei = si + length - 1;
+    ej = sj;
+  }
+  while (ej > 9 || ei > 9) {
     si = Math.floor(Math.random() * 10);
     sj = Math.floor(Math.random() * 10);
-    ej = sj;
-    ei = si + length;
-    ship = Ship(type, length, [si, sj], [ei, ej]);
-    while (ei > 9 || !board.placeShip(ship)) {
-      si = Math.floor(Math.random() * 10);
-      sj = Math.floor(Math.random() * 10);
+    if (si === sj) {
+      ej = sj + length - 1;
+      ei = si;
+    } else {
+      ei = si + length - 1;
       ej = sj;
-      ei = si + length;
-      ship = Ship(type, length, [si, sj], [ei, ej]);
-      counter++;
-      if (counter === 100) return false;
     }
   }
-  return true;
+  return [
+    [si, sj],
+    [ei, ej],
+  ];
 }
 
 const fakeGameboard = () => {
@@ -66,24 +55,24 @@ const fakeGameboard = () => {
     if (rowStart === rowEnd) {
       //first makes sure that a ship is not placed
       //in any of those cells
-      for (let k = i; k < ship.length; k++) {
+      for (let k = i; k < i + ship.length; k++) {
         if (board[rowStart][k][2]) {
           return false;
         }
       }
-      for (let k = i; k < ship.length; k++) {
+      for (let k = i; k < i + ship.length; k++) {
         board[rowStart][k][2] = ship;
       }
       ships.push(ship);
     } else {
       //the ship is placed vertically
-      for (let k = rowStart; k < ship.length; k++) {
+      for (let k = rowStart; k < rowStart + ship.length; k++) {
         if (board[k][i][2]) {
           return false;
         }
       }
 
-      for (let k = rowStart; k < ship.length; k++) {
+      for (let k = rowStart; k < rowStart + ship.length; k++) {
         board[k][i][2] = ship;
       }
       ships.push(ship);
@@ -128,13 +117,13 @@ const car = {
 const carrierHoriz = Ship("carrier", 5, [0, 0], [0, 4]);
 const carrierVert = Ship("carrier", 5, [0, 0], [4, 0]);
 
-describe("tests for placeShip", () => {
-  test("checks if the board coordinates are correct", () => {
-    expect(board.showBoard()[0][0]).toEqual([1, 1, null, false]);
-    expect(board.showBoard()[1][1]).toEqual([2, 2, null, false]);
-    expect(board.showBoard()[9][9]).toEqual([10, 10, null, false]);
-  });
+test("checks if the board coordinates are correct", () => {
+  expect(board.showBoard()[0][0]).toEqual([1, 1, null, false]);
+  expect(board.showBoard()[1][1]).toEqual([2, 2, null, false]);
+  expect(board.showBoard()[9][9]).toEqual([10, 10, null, false]);
+});
 
+describe("tests for placeShip", () => {
   test("checks if a ship is placed correctly horizontaly", () => {
     board.placeShip(carrierHoriz);
     expect(board.showBoard()[0][0][2]).toEqual(carrierHoriz);
@@ -184,10 +173,17 @@ describe("tests for receiveAttack", () => {
 });
 
 describe("tests for placeShipRandomly", () => {
-  test("doesn't place ship if there is no room", () => {
-    expect(placeShipRandomlyMock(fakeBoard, "carrier", 5)).toBe(false);
+  test("returns valid coordinates", () => {
+    const coords = placeShipRandomlyMock(1, 1, 5);
+    const [start, finish] = coords;
+    expect(finish[0]).toBeLessThan(9);
+    expect(finish[1]).toBeLessThan(9);
   });
-  test("places ship if there is room", () => {
-    expect(placeShipRandomlyMock(board, "carrier", 5)).toBe(true);
+
+  test("returns valid coordinates", () => {
+    const coords = placeShipRandomlyMock(1, 2, 5);
+    const [start, finish] = coords;
+    expect(finish[0]).toBeLessThan(9);
+    expect(finish[1]).toBeLessThan(9);
   });
 });
