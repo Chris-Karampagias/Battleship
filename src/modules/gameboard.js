@@ -20,30 +20,30 @@ const Gameboard = () => {
   const placeShip = (ship) => {
     const rowStart = ship.start[0];
     const rowEnd = ship.end[0];
-    const i = ship.start[1];
+    const columnStart = ship.start[1];
     //the ship is placed horizontally
     if (rowStart === rowEnd) {
       //first makes sure that a ship is not placed
       //in any of those cells
-      for (let k = i; k < ship.length; k++) {
+      for (let k = columnStart; k < columnStart + ship.length; k++) {
         if (board[rowStart][k][2]) {
           return false;
         }
       }
-      for (let k = i; k < ship.length; k++) {
+      for (let k = columnStart; k < columnStart + ship.length; k++) {
         board[rowStart][k][2] = ship;
       }
       ships.push(ship);
     } else {
       //the ship is placed vertically
-      for (let k = rowStart; k < ship.length; k++) {
-        if (board[k][i][2]) {
+      for (let k = rowStart; k < rowStart + ship.length; k++) {
+        if (board[k][columnStart][2]) {
           return false;
         }
       }
 
-      for (let k = rowStart; k < ship.length; k++) {
-        board[k][i][2] = ship;
+      for (let k = rowStart; k < rowStart + ship.length; k++) {
+        board[k][columnStart][2] = ship;
       }
       ships.push(ship);
     }
@@ -64,40 +64,38 @@ const Gameboard = () => {
     return ships.every((ship) => ship.isSunk());
   };
 
-  return { showBoard, placeShip, receiveAttack, allShipsSunk };
+  const shipIsAdded = (type) => {
+    return ships.some((ship) => ship.type === type);
+  };
+  return { showBoard, placeShip, receiveAttack, allShipsSunk, shipIsAdded };
 };
 
 function placeShipRandomly(board, type, length) {
-  const key = Math.floor(Math.random() * 2);
   let ship, si, sj, ei, ej;
-  if (key === 0) {
-    //place ship horizontally
-    si = Math.floor(Math.random() * 10);
-    sj = Math.floor(Math.random() * 10);
-    ej = sj + length;
+  si = Math.floor(Math.random() * 10);
+  sj = Math.floor(Math.random() * 10);
+  if (si === sj) {
+    //ship is placed horizontally
+    ej = sj + length - 1;
     ei = si;
     ship = Ship(type, length, [si, sj], [ei, ej]);
-    while (ej > 9 || !board.placeShip(ship)) {
-      si = Math.floor(Math.random() * 10);
-      sj = Math.floor(Math.random() * 10);
-      ej = sj + length;
-      ei = si;
-      ship = Ship(type, length, [si, sj], [ei, ej]);
-    }
   } else {
-    //place ship vertically
+    //ship is placed vertically
+    ei = si + length - 1;
+    ej = sj;
+    ship = Ship(type, length, [si, sj], [ei, ej]);
+  }
+  while (ej >= 10 || ei >= 10 || !board.placeShip(ship)) {
     si = Math.floor(Math.random() * 10);
     sj = Math.floor(Math.random() * 10);
-    ej = sj;
-    ei = si + length;
-    ship = Ship(type, length, [si, sj], [ei, ej]);
-    while (ei > 9 || !board.placeShip(ship)) {
-      si = Math.floor(Math.random() * 10);
-      sj = Math.floor(Math.random() * 10);
+    if (si === sj) {
+      ej = sj + length - 1;
+      ei = si;
+    } else {
+      ei = si + length - 1;
       ej = sj;
-      ei = si + length;
-      ship = Ship(type, length, [si, sj], [ei, ej]);
     }
+    ship = Ship(type, length, [si, sj], [ei, ej]);
   }
 }
 
