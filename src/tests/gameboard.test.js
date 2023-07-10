@@ -142,6 +142,15 @@ describe("tests for placeShip", () => {
     expect(board.showBoard()[4][0][2]).toEqual(carrierVert);
   });
 
+  test("works for any pair of acceptable coordinates", () => {
+    const ship = Ship("battleship", 4, [4, 5], [7, 5]);
+    board.placeShip(ship);
+    expect(board.showBoard()[4][5][2]).toEqual(ship);
+    expect(board.showBoard()[5][5][2]).toEqual(ship);
+    expect(board.showBoard()[6][5][2]).toEqual(ship);
+    expect(board.showBoard()[7][5][2]).toEqual(ship);
+  });
+
   test("returns false if a ship is already placed in the specified coordinates", () => {
     const cruiser = Ship("cruiser", 3, [0, 0], [0, 2]);
     board.placeShip(carrierHoriz);
