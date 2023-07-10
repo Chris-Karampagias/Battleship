@@ -66,8 +66,6 @@ function unmarkCells(cells) {
 function manipulateCells(start, cells, ship, callback) {
   const horizontalOption = document.querySelector(".horizontally");
   let [c1, c2] = start;
-  c1 = c1 + 1;
-  c2 = c2 + 1;
   if (horizontalOption.classList.contains("chosen")) {
     if (c2 + ship[1] > 10) {
       return;
@@ -164,6 +162,17 @@ function highlightCells(cells, board) {
   }
 }
 
+function clearGrid(cells) {
+  for (let i = 0; i < cells.length; i++) {
+    if (cells[i].hasAttribute("data-ship")) {
+      cells[i].removeAttribute("data-ship");
+    }
+    if (cells[i].classList.contains("marked")) {
+      cells[i].classList.remove("marked");
+    }
+  }
+}
+
 function colorCell(cell) {
   cell.classList.add("marked");
 }
@@ -180,4 +189,5 @@ export {
   markCell,
   eraseScreen2,
   randomize,
+  clearGrid,
 };
