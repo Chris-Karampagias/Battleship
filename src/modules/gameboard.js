@@ -67,7 +67,28 @@ const Gameboard = () => {
   const shipIsAdded = (type) => {
     return ships.some((ship) => ship.type === type);
   };
-  return { showBoard, placeShip, receiveAttack, allShipsSunk, shipIsAdded };
+
+  const clear = () => {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (board[i][j][2]) {
+          board[i][j][2] = null;
+        }
+      }
+    }
+    while (ships.length !== 0) {
+      ships.pop();
+    }
+  };
+
+  return {
+    showBoard,
+    placeShip,
+    receiveAttack,
+    allShipsSunk,
+    shipIsAdded,
+    clear,
+  };
 };
 
 function placeShipRandomly(board, type, length) {
