@@ -1,5 +1,7 @@
 /* eslint-disable no-plusplus */
-import { placeShipRandomly } from "./gameboard";
+import { Gameboard, placeShipRandomly } from "./gameboard";
+import { Ship } from "./ship";
+import { createScreen3 } from "./screen3";
 
 function createGrid() {
   const grid = document.createElement("div");
@@ -48,6 +50,8 @@ function createScreen2() {
 }
 
 function eraseScreen2() {
+  const body = document.querySelector("body");
+  body.setAttribute("data-screen", "3");
   const screen2 = document.querySelector(".screen2");
   screen2.remove();
 }
@@ -153,6 +157,7 @@ function highlightCells(cells, board) {
             Number(cells[k].attributes[1].value) === i &&
             Number(cells[k].attributes[2].value) === j
           ) {
+            //the cell's data-row and data-column properties match the indexes of the specified board position
             colorCell(cells[k]);
             break;
           }
@@ -181,13 +186,113 @@ function markCell(cell, name) {
   cell.setAttribute("data-ship", name);
 }
 
-export {
-  createScreen2,
-  unmarkCells,
-  manipulateCells,
-  colorCell,
-  markCell,
-  eraseScreen2,
-  randomize,
-  clearGrid,
-};
+function screen2Logic(playerBoard, aiBoard, shipsInfo, currentShip) {
+  createScreen2();
+  playerBoard = Gameboard();
+  aiBoard = Gameboard();
+  const verticalOption = document.querySelector(".vertically");
+  const horizontalOption = document.querySelector(".horizontally");
+  const message = document.querySelector(".message");
+  const resetButton = document.querySelector(".reset-button");
+  const randomizeButton = document.querySelector(".randomize-button");
+
+  verticalOption.addEventListener("click", (e) => {
+    if (e.target.classList.contains("chosen")) {
+      return;
+    }
+    horizontalOption.classList.toggle("chosen");
+    e.target.classList.toggle("chosen");
+  });
+
+  horizontalOption.addEventListener("click", (e) => {
+    if (e.target.classList.contains("chosen")) {
+      return;
+    }
+    verticalOption.classList.toggle("chosen");
+    e.target.classList.toggle("chosen");
+  });
+
+  randomizeButton.addEventListener("click", () => {
+    randomize(playerBoard, aiBoard, shipsInfo, cells);
+    verticalOption.classList.add("no-pointer-events");
+    horizontalOption.classList.add("no-pointer-events");
+    resetButton.classList.add("no-pointer-events");
+    cells.forEach((cell) => cell.classList.add("no-pointer-events"));
+    message.textContent = "Get Ready!";
+    setTimeout(() => {
+      eraseScreen2();
+      createScreen3(playerBoard);
+    }, 1500);
+  });
+
+  resetButton.addEventListener("click", () => {
+    playerBoard.clear();
+    aiBoard.clear();
+    clearGrid(cells);
+    currentShip = undefined;
+    message.textContent = "Place your carrier!";
+    if (randomizeButton.classList.contains("no-pointer-events")) {
+      randomizeButton.classList.remove("no-pointer-events");
+    }
+  });
+
+  const cells = Array.from(document.querySelectorAll(".cell"));
+  cells.forEach((cell) => {
+    cell.addEventListener("mouseover", (e) => {
+      currentShip = shipsInfo.find((ship) => !playerBoard.shipIsAdded(ship[0]));
+      if (e.target.hasAttribute("data-ship")) {
+        return;
+      }
+      const start = [
+        Number(e.target.attributes[1].value),
+        Number(e.target.attributes[2].value),
+      ];
+      unmarkCells(cells);
+      manipulateCells(start, cells, currentShip, colorCell);
+    });
+
+    cell.addEventListener("click", (e) => {
+      if (currentShip === undefined) {
+        currentShip = shipsInfo.find(
+          (ship) => !playerBoard.shipIsAdded(ship[0])
+        );
+      }
+      if (e.target.hasAttribute("data-ship")) {
+        return;
+      }
+      randomizeButton.classList.add("no-pointer-events");
+      const start = [
+        Number(e.target.attributes[1].value),
+        Number(e.target.attributes[2].value),
+      ];
+      const end = manipulateCells(start, cells, currentShip, markCell);
+      placeShipRandomly(aiBoard, currentShip[0], currentShip[1]);
+      const ship = Ship(currentShip[0], currentShip[1], start, end);
+      playerBoard.placeShip(ship);
+      if (currentShip[0] === "patrolBoat") {
+        verticalOption.classList.add("no-pointer-events");
+        horizontalOption.classList.add("no-pointer-events");
+        cells.forEach((cell) => cell.classList.add("no-pointer-events"));
+        resetButton.classList.add("no-pointer-events");
+        message.textContent = "Get ready!";
+        setTimeout(() => {
+          eraseScreen2();
+          createScreen3(playerBoard);
+        }, 1500);
+        return;
+      }
+      currentShip = shipsInfo.find((ship) => !playerBoard.shipIsAdded(ship[0]));
+      if (currentShip[0] === "patrolBoat") {
+        message.textContent = "Place your patrol boat!";
+      } else {
+        message.textContent = "Place your " + currentShip[0] + "!";
+      }
+    });
+
+    cell.addEventListener("mouseout", () => {
+      unmarkCells(cells);
+    });
+  });
+}
+
+export { screen2Logic, highlightCells };
