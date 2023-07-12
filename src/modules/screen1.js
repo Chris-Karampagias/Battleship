@@ -35,4 +35,17 @@ function eraseScreen1() {
   screen1.remove();
 }
 
-export { createScreen1, getName, eraseScreen1 };
+function screen1Logic() {
+  createScreen1();
+  const submitButton = document.querySelector(".submit-button");
+  submitButton.addEventListener("click", (e) => {
+    const name = getName();
+    e.preventDefault();
+    setTimeout(() => {
+      eraseScreen1();
+    }, 800);
+  });
+  return name;
+}
+
+export { screen1Logic };
