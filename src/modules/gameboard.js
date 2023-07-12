@@ -56,8 +56,11 @@ const Gameboard = () => {
     if (board[i][j][2]) {
       //if there is a ship there
       board[i][j][2].hit();
+      board[i][j][3] = true;
+      return true;
     }
     board[i][j][3] = true;
+    return false;
   };
 
   const allShipsSunk = () => {
@@ -80,6 +83,33 @@ const Gameboard = () => {
       ships.pop();
     }
   };
+  const markHitCells = (cells) => {
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board.length; j++) {
+        if (board[i][j][3] === true && !board[i][j][2]) {
+          for (let k = 0; k < cells.length; k++) {
+            if (
+              Number(cells[k].attributes[1].value) == i &&
+              Number(cells[k].attributes[2].value) == j
+            ) {
+              cells[k].classList.add("miss");
+              break;
+            }
+          }
+        } else if (board[i][j][3] === true && board[i][j][2]) {
+          for (let k = 0; k < cells.length; k++) {
+            if (
+              Number(cells[k].attributes[1].value) == i &&
+              Number(cells[k].attributes[2].value) == j
+            ) {
+              cells[k].classList.add("hit");
+              break;
+            }
+          }
+        }
+      }
+    }
+  };
 
   return {
     showBoard,
@@ -88,6 +118,7 @@ const Gameboard = () => {
     allShipsSunk,
     shipIsAdded,
     clear,
+    markHitCells,
   };
 };
 
