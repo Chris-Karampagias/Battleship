@@ -186,10 +186,18 @@ function markCell(cell, name) {
   cell.setAttribute("data-ship", name);
 }
 
-function screen2Logic(playerBoard, aiBoard, shipsInfo, currentShip) {
+function screen2Logic(name) {
+  let currentShip;
+  const shipsInfo = [
+    ["carrier", 5],
+    ["battleship", 4],
+    ["destroyer", 3],
+    ["submarine", 3],
+    ["patrolBoat", 2],
+  ];
   createScreen2();
-  playerBoard = Gameboard();
-  aiBoard = Gameboard();
+  const playerBoard = Gameboard();
+  const aiBoard = Gameboard();
   const verticalOption = document.querySelector(".vertically");
   const horizontalOption = document.querySelector(".horizontally");
   const message = document.querySelector(".message");
@@ -219,9 +227,10 @@ function screen2Logic(playerBoard, aiBoard, shipsInfo, currentShip) {
     resetButton.classList.add("no-pointer-events");
     cells.forEach((cell) => cell.classList.add("no-pointer-events"));
     message.textContent = "Get Ready!";
+    randomizeButton.classList.add("no-pointer-events");
     setTimeout(() => {
       eraseScreen2();
-      createScreen3(playerBoard);
+      createScreen3(playerBoard, name);
     }, 1500);
   });
 
@@ -277,7 +286,7 @@ function screen2Logic(playerBoard, aiBoard, shipsInfo, currentShip) {
         message.textContent = "Get ready!";
         setTimeout(() => {
           eraseScreen2();
-          createScreen3(playerBoard);
+          createScreen3(playerBoard, name);
         }, 1500);
         return;
       }
@@ -293,6 +302,7 @@ function screen2Logic(playerBoard, aiBoard, shipsInfo, currentShip) {
       unmarkCells(cells);
     });
   });
+  return [playerBoard, aiBoard];
 }
 
 export { screen2Logic, highlightCells };
