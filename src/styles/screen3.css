@@ -1,0 +1,95 @@
+.screen3 {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 48px;
+  background-color: rgb(8, 113, 198);
+  color: white;
+}
+
+.message-container {
+  height: 13%;
+  width: 100%;
+}
+
+.message-screen3 {
+  font-size: 3rem;
+  width: 100%;
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.boards {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  height: 87%;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+}
+
+.player-container,
+.ai-container {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hit {
+  background-color: red;
+}
+
+.miss {
+  background: url(../images/x-symbol.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-origin: content-box;
+}
+
+.player-grid,
+.ai-grid {
+  aspect-ratio: 1/1;
+  background-color: white;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+}
+
+.player-waters,
+.ai-waters {
+  font-size: 2rem;
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 0.2rem 0.2rem;
+}
+
+.player-cell,
+.ai-cell {
+  border: 1px solid rgb(8, 113, 198);
+  padding: 1rem;
+}
+
+.ai-cell {
+  cursor: pointer;
+}
+
+.message-container,
+.player-container,
+.ai-container {
+  transform: scale(1);
+  animation: 1.3s ease-in 1;
+  animation-name: screen3;
+}
+
+@keyframes screen3 {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
