@@ -9,6 +9,7 @@ function createScreen3(playerBoard, name) {
   messageContainer.className = "message-container";
   const message = document.createElement("div");
   message.className = "message-screen3";
+  console.log(name);
   message.textContent = `Awaiting for orders ${name}`;
   messageContainer.append(message);
   const boards = document.createElement("div");
@@ -85,7 +86,7 @@ function screen3Logic(playerBoard, aiBoard, name) {
           message.textContent = "It's a hit!";
         }, 200);
         if (aiBoard.allShipsSunk()) {
-          setTimeout(() => {
+          setTimeout((name) => {
             message.textContent = `You win ${name}!`;
           }, 700);
           return;
